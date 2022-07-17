@@ -152,6 +152,7 @@ func parseRedirInclude(p *parser, t token) parserStateFun {
 	switch t.typ {
 	case tokenNewline:
 		filename := ""
+		fmt.Printf("'%v'\n", p.tokenbuf)
 		for i := range p.tokenbuf {
 			filename += p.tokenbuf[i].val
 		}

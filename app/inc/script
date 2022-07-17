@@ -1,0 +1,4 @@
+all:VQ:
+	echo -n
+<$MKINCDIR/std/install
+

@@ -307,6 +307,11 @@ func main() {
 	var shallowrebuild bool
 	var quiet bool
 
+	if mkincdir := os.Getenv("MKINCDIR") ; mkincdir == "" {
+		homeDir, _ := os.UserHomeDir()
+		os.Setenv("MKINCDIR", homeDir + "/app/mk/inc" )
+	}
+
 	flag.StringVar(&mkfilepath, "f", "mkfile", "use the given file as mkfile")
 	flag.BoolVar(&dryrun, "n", false, "print commands without actually executing")
 	flag.BoolVar(&shallowrebuild, "r", false, "force building of just targets")
