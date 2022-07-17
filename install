@@ -1,5 +1,8 @@
 #!/bin/sh
 
+pwd=`pwd`
 cd m/cmd/mk
 go install
+cd $pwd
+cp -r -f app/* $HOME/app/mk/
 

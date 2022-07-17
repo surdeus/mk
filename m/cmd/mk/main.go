@@ -240,6 +240,22 @@ func mkNode(g *graph, u *node, dryrun bool, required bool) {
 	}
 }
 
+func mkWarn(msg string) {
+	mkPrintWarn(msg)
+}
+
+func mkPrintWarn(msg string) {
+	if !nocolor {
+		os.Stderr.WriteString(ansiTermYellow)
+	}
+
+	fmt.Fprintf(os.Stderr, "%s\n", msg)
+
+	if !nocolor {
+		os.Stderr.WriteString(ansiTermDefault)
+	}
+}
+
 func mkError(msg string) {
 	mkPrintError(msg)
 	os.Exit(1)

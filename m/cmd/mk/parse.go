@@ -28,6 +28,14 @@ func (p *parser) parseError(context string, expected string, found token) {
 	mkError("")
 }
 
+func (p *parser) basicWarnAtToken(what string, found token) {
+	p.basicWarnAtLine(what, found.line)
+}
+
+func (p *parser) basicWarnAtLine(what string, line int) {
+	mkWarn(fmt.Sprintf("%s:%d: warning: %s\n", p.name, line, what))
+}
+
 // More basic errors.
 func (p *parser) basicErrorAtToken(what string, found token) {
 	p.basicErrorAtLine(what, found.line)
@@ -152,13 +160,14 @@ func parseRedirInclude(p *parser, t token) parserStateFun {
 	switch t.typ {
 	case tokenNewline:
 		filename := ""
-		fmt.Printf("'%v'\n", p.tokenbuf)
+		//fmt.Printf("'%v'\n", p.tokenbuf)
 		for i := range p.tokenbuf {
-			filename += p.tokenbuf[i].val
+			filename += expand(p.tokenbuf[i].val, p.rules.vars, true)[0]
 		}
 		file, err := os.Open(filename)
 		if err != nil {
-			p.basicErrorAtToken(fmt.Sprintf("cannot open %s", filename), p.tokenbuf[0])
+			p.basicWarnAtToken(fmt.Sprintf("cannot open %s", filename), p.tokenbuf[0])
+			//p.basicErrorAtToken(fmt.Sprintf("cannot open %s", filename), p.tokenbuf[0])
 		}
 		input, _ := ioutil.ReadAll(file)
 
