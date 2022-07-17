@@ -1,6 +1,7 @@
 # Universal powerful simple C build file.
-<`goblin echo -n $MKINCDIR/std/cbuild`
-<`goblin echo $MKINCDIR/std/install`
+<$(MKINCDIR)/std/cbuild
+<$(MKINCDIR)/std/install
+
 clean:V:
 	rm -f $TARG $TARG.strip $OFILES
 uninstall:V:

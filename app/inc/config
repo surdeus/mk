@@ -1,7 +1,7 @@
 # Main configuration file.
-EXEDIR = $HOME/exe
-APPDIR = $HOME/app
-SHRDIR = $HOME/shr
+EXEDIR = $(HOME)/exe
+APPDIR = $(HOME)/app
+SHRDIR = $(HOME)/shr
 INCDIR = $SHRDIR/inc
 MKINCDIR = $APPDIR/mk/inc
 OBJDIR = $SHRDIR/obj
@@ -54,4 +54,4 @@ LEX = lex
 PKG_CONFIG_CFLAGS = pkg-config --cflags
 PkG_CONFIG_LIBS = pkg-config --libs
 
-<$HOME/env/mk/config
+<$(HOME)/env/mk/config

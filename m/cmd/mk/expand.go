@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 	"unicode/utf8"
+	"os"
 )
 
 // Expand a word. This includes substituting variables and handling quotes.
@@ -137,13 +138,14 @@ func expandSigil(input string, vars map[string][]string) ([]string, int) {
 	c, w := utf8.DecodeRuneInString(input)
 	var offset int
 	var varname string
-	var namelist_pattern = regexp.MustCompile(`^\s*([^:]+)\s*:\s*([^%]*)%([^=]*)\s*=\s*([^%]*)%([^%]*)\s*`)
 
 	// escaping of "$" with "$$"
 	if c == '$' {
 		return []string{"$"}, 2
 		// match bracketed expansions: ${foo}, or ${foo:a%b=c%d}
 	} else if c == '{' {
+		var namelist_pattern = regexp.MustCompile(
+			`^\s*([^:]+)\s*:\s*([^%]*)%([^=]*)\s*=\s*([^%]*)%([^%]*)\s*`)
 		j := strings.IndexRune(input[w:], '}')
 		if j < 0 {
 			return []string{"$" + input}, len(input)
@@ -176,6 +178,15 @@ func expandSigil(input string, vars map[string][]string) ([]string, int) {
 			return expanded_values, offset
 		}
 		// bare variables: $foo
+	} else if c == '(' { // Environment variables.
+		j := strings.IndexRune(input[w:], ')')
+		if j < 0 {
+			return []string{"$" + input}, len(input)
+		}
+		varname = input[w : w+j]
+		offset = w + j + 1
+
+		return []string{os.Getenv(varname)}, offset
 	} else {
 		// try to match a variable name
 		i := 0

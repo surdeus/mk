@@ -8,7 +8,7 @@
     * Expand `$alltargets`.
     * Man page.
     * Namelist syntax.
-    * Environment variables.
+    * Environment variables. (done)
 
 # Long-term
     * Nicer syntax for alternative-shell rules.
