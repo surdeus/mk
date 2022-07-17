@@ -1,9 +1,9 @@
-TARGNAMES = `{cd m/cmd && ls && cd ..}
-TARGS = ${TARGNAMES:%=exe/%}
-STRIPTARGS = ${TARGS:%=%.strip}
+TARGNAMES = `cd m/cmd && ls && cd ..`
+TARG = ${TARGNAMES:%=exe/%}
+STRIPTARG = ${TARG:%=%.strip}
 
 all :V: build
-strip :V: $STRIPTARGS
+strip :V: $STRIPTARG
 %.strip : %
 	cp -f $prereq $target
 	$STRIP $target
@@ -26,4 +26,4 @@ build-sh :V:
 		cd $pwd
 	done
 clean:V:
-	rm -f $TARGS $STRIPTARGS
+	rm -f $TARG $STRIPTARGS

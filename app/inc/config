@@ -1,4 +1,7 @@
 # Main configuration file.
+
+MKINCDIR = $(MKINCDIR)
+
 EXEDIR = $(HOME)/exe
 APPDIR = $(HOME)/app
 SHRDIR = $(HOME)/shr
