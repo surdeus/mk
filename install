@@ -4,5 +4,6 @@ pwd=`pwd`
 cd m/cmd/mk
 go install
 cd $pwd
+mkdir -p $HOME/app/mk
 cp -r -f app/* $HOME/app/mk/
 
