@@ -1,4 +1,4 @@
-TARGNAMES = `cd src/cmd && ls && cd ..`
+TARGNAMES = `cd src/cmd && goblin ls && cd ..`
 TARG = ${TARGNAMES:%=exe/%}
 STRIPTARG = ${TARG:%=%.strip}
 
@@ -20,10 +20,10 @@ build-rc :V:
 build-sh :V:
 	mkdir -p exe
 	pwd=`pwd`
-	for name in $TARGNAMES ; do
+	for name in `cd src/cmd && goblin ls && cd $pwd`; do
 		cd src/cmd/$name
 		go build -o $pwd/exe/$name
 		cd $pwd
 	done
 clean:V:
-	rm -f $TARG $STRIPTARGS
+	rm -f exe/*
