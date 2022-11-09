@@ -22,7 +22,12 @@ build-sh :V:
 	pwd=`pwd`
 	for name in `cd src/cmd && goblin ls && cd $pwd`; do
 		cd src/cmd/$name
-		go build -o $pwd/exe/$name
+		echo Buliding "$name"...
+		if go build -o $pwd/exe/$name ; then
+			echo Done building "$name"
+		else
+			echo "Error(s) while building $name"
+		fi
 		cd $pwd
 	done
 clean:V:
