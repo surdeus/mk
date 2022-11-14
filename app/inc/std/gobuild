@@ -29,8 +29,8 @@ build-sh :V:
 			echo "Error(s) while building $name"
 		fi
 		if echo "$name" | goblin in $BUILD_WASM ; then
-			echo Bulding WASM for "$name"
-			if go build -o $pwd/$STATIC/$name.wasm ; then
+			echo Bulding WASM for "$name"...
+			if GOARCH=wasm GOOS=js go build -o $pwd/$STATIC/$name.wasm ; then
 				echo Done building WASM for "$name"
 			else
 				echo "Error(s) while building WASM for $name"
