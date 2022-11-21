@@ -1,7 +1,3 @@
-TARGNAMES = `cd src/cmd && goblin ls && cd ..`
-TARG = ${TARGNAMES:%=exe/%}
-STRIPTARG = ${TARG:%=%.strip}
-
 all :V: build
 strip :V: $STRIPTARG
 %.strip : %
@@ -9,18 +5,10 @@ strip :V: $STRIPTARG
 	$STRIP $target
 
 build :V: build-$MKSHELL
-build-rc :V:
-	mkdir -p exe
-	pwd=`{pwd}
-	for(name in $TARGNAMES){
-		cd src/cmd/$name
-		go build -o $pwd/exe/$name
-		cd $pwd
-	}
 build-sh :V:
 	mkdir -p exe
 	pwd=`pwd`
-	for name in `cd src/cmd && goblin ls && cd $pwd`; do
+	for name in `command cd src/cmd && goblin ls && command cd $pwd`; do
 		cd src/cmd/$name
 		echo Buliding "$name"...
 		if go build -o $pwd/exe/$name ; then
@@ -29,14 +17,23 @@ build-sh :V:
 			echo "Error(s) while building $name"
 		fi
 		if echo "$name" | goblin in $BUILD_WASM ; then
-			echo Bulding WASM for "$name"...
-			if GOARCH=wasm GOOS=js go build -o $pwd/$STATIC/$name.wasm ; then
+			echo Bulding WASM for "'$name'"...
+			if GOARCH=wasm GOOS=js go build -o "$pwd/$STATIC/$name.wasm" ; then
 				echo Done building WASM for "$name"
 			else
-				echo "Error(s) while building WASM for $name"
+				echo "Error(s) while building WASM for '$name'"
 			fi
 		fi
-		cd $pwd
+		command cd $pwd
 	done
 clean:V:
-	rm -f exe/*
+	pwd=`pwd`
+	names=`command cd src/cmd && goblin ls && command cd $pwd`
+	for name in $names ; do
+		echo Removing "'$name'..."
+		rm -f "$pwd/exe/$name"
+		if echo "$name" | goblin in $BUILD_WASM ; then
+			rm -f "$pwd/$STATIC/$name.wasm"
+		fi
+	done
+
