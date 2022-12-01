@@ -4,8 +4,8 @@ strip :V: $STRIPTARG
 	cp -f $prereq $target
 	$STRIP $target
 
-build :V: build-$MKSHELL
-build-sh :V:
+build :VQ: build-$MKSHELL
+build-sh :VQ:
 	mkdir -p exe
 	pwd=`pwd`
 	for name in `command cd src/cmd && goblin ls && command cd $pwd`; do
